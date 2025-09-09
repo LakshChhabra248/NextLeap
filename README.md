@@ -65,7 +65,7 @@ The Architects of NextLeap:
 | 3 | Garvit Chaudhary | | [Link](#) | [Link](#) |
 | 4 | Aamir | | [Link](#) | [Link](#) |
 | 5 | Anishka Sharma | | [Link](#) | [Link](#) |
-| 6 | *(To Be Decided)* | | [Link](#) | [Link](#) |
+| 6 | Aadishri Abrol | | [Link](#) | [Link](#) |
 
 ---
 <div align="center">
