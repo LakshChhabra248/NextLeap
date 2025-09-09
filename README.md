@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="assests/logo.png" alt="NextLeap Logo" width="150"/>
+  <img src="https://github.com/LakshChhabra248/NextLeap/blob/main/assets/logo.png" alt="NextLeap Logo" width="150"/>
   <h1>NextLeap: The AI Career Architect</h1>
   <p>
     <strong>Your Personal AI-Powered Guide to Discovering the Perfect Career Path.</strong>
