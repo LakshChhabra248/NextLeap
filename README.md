@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://drive.google.com/file/d/1ObgLxcCnDt8kG_6QJUzDAC2Ion1V0bwX/view?usp=sharing" alt="NextLeap Logo" width="150"/>
+  <img src="assests/logo.png" alt="NextLeap Logo" width="150"/>
   <h1>NextLeap: The AI Career Architect</h1>
   <p>
     <strong>Your Personal AI-Powered Guide to Discovering the Perfect Career Path.</strong>
