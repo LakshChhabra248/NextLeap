@@ -58,14 +58,14 @@ Our project is built on a modern, scalable, and Python-centric stack:
 
 The Architects of NextLeap:
 
-| Name | Role | GitHub Profile | LinkedIn Profile |
-| :--- | :--- | :--- | :--- |
-| **Lakshay Chhabra** | Team Lead / Product Strategist | [Link](#) | [Link](#) |
-| Aviral Jain | | [Link](#) | [Link](#) |
-| Garvit Chaudhary | | [Link](#) | [Link](#) |
-| Aamir | | [Link](#) | [Link](#) |
-| Anishka Sharma | | [Link](#) | [Link](#) |
-| *(To Be Decided)* | | [Link](#) | [Link](#) |
+| Sr. No. | Name | Role | GitHub Profile | LinkedIn Profile |
+| :--- | :--- | :--- | :--- | :--- |
+| 1 | **Lakshay Chhabra** | Team Lead / Product Strategist | [Link](#) | [Link](#) |
+| 2 | Aviral Jain | | [Link](#) | [Link](#) |
+| 3 | Garvit Chaudhary | | [Link](#) | [Link](#) |
+| 4 | Aamir | | [Link](#) | [Link](#) |
+| 5 | Anishka Sharma | | [Link](#) | [Link](#) |
+| 6 | *(To Be Decided)* | | [Link](#) | [Link](#) |
 
 ---
 <div align="center">
