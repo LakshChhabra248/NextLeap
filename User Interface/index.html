@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NextLeap - The AI Career Architect</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="main-container">
+        
+        <!-- Screen 1: Landing Page -->
+        <section class="screen active" id="landing-screen">
+            <div class="content-wrapper">
+                <h1 class="title">NextLeap</h1>
+                <h3 class="tagline">Your Personal AI Career Architect</h3>
+                <button class="glass-button" id="start-btn">Start My Journey &rarr;</button>
+            </div>
+        </section>
+
+        <!-- Screen 2: Conversation UI -->
+        <section class="screen" id="conversation-screen">
+            <div class="content-wrapper">
+                <div id="ai-question-area">
+                    <h2 class="question-text">Let's start with your favorite subject in school. What did you enjoy the most?</h2>
+                </div>
+                <div class="typing-indicator" id="typing-indicator">
+                    <span></span><span></span><span></span>
+                </div>
+                <div id="user-options-area" class="options-grid">
+                    <button class="option-card">Science & Math</button>
+                    <button class="option-card">Arts & Humanities</button>
+                    <button class="option-card">Commerce & Business</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Screen 3: Happiness Slider -->
+        <section class="screen" id="happiness-screen">
+            <div class="content-wrapper">
+                <div class="recommendation-card">
+                    <p>Based on our chat, a career in...</p>
+                    <h2 id="logical-recommendation">Engineering</h2>
+                    <p>...seems like a very logical path for you.</p>
+                </div>
+                <h3 class="question-text">But how excited does this path make you feel?</h3>
+                <div class="slider-container">
+                    <span>😞</span>
+                    <input type="range" min="1" max="5" value="3" class="happiness-slider" id="happiness-slider">
+                    <span>🤩</span>
+                </div>
+                <button class="glass-button" id="lock-feeling-btn">Lock My Feeling</button>
+            </div>
+        </section>
+
+        <!-- Screen 4: Final Roadmap -->
+        <section class="screen" id="roadmap-screen">
+            <div class="content-wrapper">
+                <h2 class="title">Your Personalized Roadmap!</h2>
+                <div class="roadmap-content" id="roadmap-content">
+                    <p>Your journey into <strong>Data Science</strong> begins now! Focus on improving your Python skills, participate in hackathons, and start exploring college courses related to analytics.</p>
+                </div>
+                <button class="glass-button" id="start-over-btn">Start Over</button>
+            </div>
+        </section>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
