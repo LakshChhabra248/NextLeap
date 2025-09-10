@@ -4,20 +4,208 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NextLeap - The AI Career Architect</title>
-    <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- Global Styles & Variables --- */
+        :root {
+            --primary-color: #8A2BE2; /* A deeper, more vibrant purple */
+            --accent-color: #41A2E0;
+            --text-color: #f0f0f0;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --shadow-color: rgba(0, 0, 0, 0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(-45deg, #0d0c1d, #1c1a3a, #3a2d56, #23a6d5);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: var(--text-color);
+            display: flex; justify-content: center; align-items: center;
+            min-height: 100vh; overflow: hidden;
+        }
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; }
+        }
+
+        /* --- Element 1: Pre-loader Styling --- */
+        #preloader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #0d0c1d; z-index: 100;
+            display: flex; justify-content: center; align-items: center;
+            transition: opacity 0.8s ease;
+        }
+        .logo-svg {
+            width: 80px; height: 80px;
+            stroke: var(--primary-color);
+            animation: spin 2s linear infinite, pulse 2s ease-in-out infinite;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes pulse { 0%, 100% { stroke-width: 8; opacity: 1; } 50% { stroke-width: 4; opacity: 0.5; } }
+
+
+        /* --- Particle Background --- */
+        #particle-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;
+        }
+        .particle {
+            position: absolute; background-color: var(--accent-color);
+            border-radius: 50%; opacity: 0.3; animation: float 25s infinite ease-in-out;
+        }
+        @keyframes float { 0%, 100% { transform: translateY(0) translateX(0); } 50% { transform: translateY(-100vh) translateX(50vw); } }
+
+
+        /* --- Main Layout & Transitions --- */
+        .main-container {
+            width: 90vw; max-width: 650px; height: 90vh; max-height: 850px;
+            position: relative; z-index: 1;
+        }
+        .screen {
+            position: absolute; width: 100%; height: 100%;
+            opacity: 0; visibility: hidden;
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            transform: translateY(20px);
+            display: flex; justify-content: center; align-items: center;
+        }
+        .screen.active { opacity: 1; visibility: visible; transform: translateY(0); }
+
+        .content-wrapper { text-align: center; padding: 20px; display: flex; flex-direction: column; gap: 2rem; width: 100%; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- Element 2: Progress Bar Styling --- */
+        .progress-bar-container {
+            display: flex; justify-content: center; gap: 10px;
+            width: 50%; align-self: center; margin-bottom: 1rem;
+        }
+        .progress-step {
+            width: 100%; height: 6px; background: var(--glass-bg);
+            border-radius: 3px; transition: background-color 0.5s ease;
+        }
+        .progress-step.active {
+            background: var(--accent-color);
+            box-shadow: 0 0 10px var(--accent-color);
+        }
+
+        /* --- Element 4: AI Typewriter Effect --- */
+        .question-text {
+            font-size: 1.6rem; font-weight: 300; min-height: 100px; /* Reserve space */
+        }
+        .question-text::after {
+            content: '|';
+            animation: blink 0.7s infinite;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+        
+        /* --- 3D Glassmorphism Base & Glow --- */
+        .glass-button, .option-card, .recommendation-card, .roadmap-card {
+            background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border); border-radius: 30px;
+            box-shadow: 0 8px 32px 0 var(--shadow-color);
+            color: var(--text-color); transition: all 0.2s ease;
+            position: relative; overflow: hidden; transform-style: preserve-3d;
+            cursor: pointer;
+        }
+        .glass-button::before, .option-card::before { /* glow effect */
+            content: ''; position: absolute; top: var(--y); left: var(--x);
+            transform: translate(-50%, -50%); width: 0; height: 0;
+            background: radial-gradient(circle closest-side, var(--accent-color), transparent);
+            border-radius: 50%; opacity: 0.5; transition: width 0.4s ease, height 0.4s ease;
+        }
+        .glass-button:hover::before, .option-card:hover::before { width: 400px; height: 400px; }
+
+
+        /* --- BUTTON SIZE & LAYOUT FIX --- */
+        .options-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+        .option-card {
+            padding: 1.2rem 1.5rem; /* Fine-tuned padding */
+            font-size: 1.1rem; /* Slightly adjusted font size */
+            font-weight: 400;
+            min-height: 80px; /* Ensures all cards have same height */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            text-align: center;
+        }
+        .option-card .icon { font-size: 1.8rem; color: var(--accent-color); flex-shrink: 0; }
+        .option-card .text { flex-grow: 1; }
+
+        .glass-button { padding: 1rem 2.5rem; font-size: 1.2rem; font-weight: 600; align-self: center; }
+
+        /* --- Element 5: Structured Roadmap Styling --- */
+        .roadmap-grid {
+            display: grid; gap: 1rem; width: 100%;
+        }
+        .roadmap-card {
+            padding: 1.5rem; text-align: left;
+            display: flex; align-items: center; gap: 20px;
+        }
+        .roadmap-card .icon { font-size: 2.5rem; color: var(--accent-color); }
+        .roadmap-card-content h3 { font-size: 1.2rem; font-weight: 600; margin-bottom: 5px; }
+        .roadmap-card-content p { font-size: 1rem; font-weight: 300; opacity: 0.8; }
+
+        /* --- Other Component Styles --- */
+        .title {
+            font-size: 4.5rem; font-weight: 700;
+            background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(138, 43, 226, 0.4);
+        }
+        .tagline { font-size: 1.6rem; font-weight: 300; }
+        .recommendation-card { padding: 2rem; }
+        .recommendation-card h2 { color: var(--accent-color); margin: 0.5rem 0; font-size: 2.8rem; font-weight: 600; }
+        .slider-container { display: flex; align-items: center; justify-content: center; gap: 1.5rem; font-size: 2.5rem; }
+        .happiness-slider {
+            -webkit-appearance: none; appearance: none;
+            width: 100%; max-width: 300px; height: 8px;
+            background: var(--glass-bg); border-radius: 5px; outline: none;
+        }
+        .happiness-slider::-webkit-slider-thumb {
+            -webkit-appearance: none; appearance: none;
+            width: 28px; height: 28px; background: var(--primary-color);
+            cursor: pointer; border-radius: 50%; border: 4px solid #0d0c1d;
+        }
+        .typing-indicator {
+            display: none; justify-content: center; align-items: center; gap: 8px; height: 60px;
+        }
+        .typing-indicator span {
+            width: 10px; height: 10px; background-color: var(--accent-color);
+            border-radius: 50%; animation: bounce 1.4s infinite ease-in-out both;
+        }
+        .typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
+        .typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1.0); } }
+
+        /* --- Responsiveness --- */
+        @media (min-width: 700px) { .options-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 480px) { .title { font-size: 3rem; } .tagline, .question-text { font-size: 1.3rem; } }
+
+    </style>
 </head>
 <body>
+
+    <!-- Element 1: Pre-loader -->
+    <div id="preloader">
+        <svg class="logo-svg" viewBox="0 0 100 100">
+            <path d="M 50,5 A 45,45 0 1 1 5,50" fill="none" stroke-width="8" stroke-linecap="round"/>
+        </svg>
+    </div>
+
+    <div id="particle-container"></div>
 
     <div class="main-container">
         
         <!-- Screen 1: Landing Page -->
-        <section class="screen active" id="landing-screen">
+        <section class="screen" id="landing-screen">
             <div class="content-wrapper">
                 <h1 class="title">NextLeap</h1>
-                <h3 class="tagline">Your Personal AI Career Architect</h3>
+                <p class="tagline">Your Personal AI Career Architect</p>
                 <button class="glass-button" id="start-btn">Start My Journey &rarr;</button>
             </div>
         </section>
@@ -25,17 +213,18 @@
         <!-- Screen 2: Conversation UI -->
         <section class="screen" id="conversation-screen">
             <div class="content-wrapper">
+                <div class="progress-bar-container">
+                    <div class="progress-step"></div>
+                    <div class="progress-step"></div>
+                    <div class="progress-step"></div>
+                </div>
                 <div id="ai-question-area">
-                    <h2 class="question-text">Let's start with your favorite subject in school. What did you enjoy the most?</h2>
+                    <p class="question-text"></p>
                 </div>
                 <div class="typing-indicator" id="typing-indicator">
                     <span></span><span></span><span></span>
                 </div>
-                <div id="user-options-area" class="options-grid">
-                    <button class="option-card">Science & Math</button>
-                    <button class="option-card">Arts & Humanities</button>
-                    <button class="option-card">Commerce & Business</button>
-                </div>
+                <div id="user-options-area" class="options-grid"></div>
             </div>
         </section>
 
@@ -47,7 +236,7 @@
                     <h2 id="logical-recommendation">Engineering</h2>
                     <p>...seems like a very logical path for you.</p>
                 </div>
-                <h3 class="question-text">But how excited does this path make you feel?</h3>
+                <p class="question-text">But how excited does this path make you feel?</p>
                 <div class="slider-container">
                     <span>😞</span>
                     <input type="range" min="1" max="5" value="3" class="happiness-slider" id="happiness-slider">
@@ -61,15 +250,196 @@
         <section class="screen" id="roadmap-screen">
             <div class="content-wrapper">
                 <h2 class="title">Your Personalized Roadmap!</h2>
-                <div class="roadmap-content" id="roadmap-content">
-                    <p>Your journey into <strong>Data Science</strong> begins now! Focus on improving your Python skills, participate in hackathons, and start exploring college courses related to analytics.</p>
-                </div>
+                <div class="roadmap-grid" id="roadmap-content"></div>
                 <button class="glass-button" id="start-over-btn">Start Over</button>
             </div>
         </section>
 
     </div>
+    
+    <!-- Element 6: Subtle Sound Effect -->
+    <audio id="click-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-interface-hint-notification-911.mp3" preload="auto"></audio>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
 
-    <script src="script.js"></script>
+            // --- Pre-loader Logic ---
+            const preloader = document.getElementById('preloader');
+            window.addEventListener('load', () => {
+                setTimeout(() => {
+                    preloader.style.opacity = '0';
+                    preloader.addEventListener('transitionend', () => preloader.style.display = 'none');
+                    // Apply initial tilt effect after everything is loaded
+                    setup3DTilt();
+                }, 1500);
+            });
+
+            // --- Sound Effect ---
+            const clickSound = document.getElementById('click-sound');
+
+            // --- DOM Elements ---
+            const allScreens = document.querySelectorAll('.screen');
+            const startBtn = document.getElementById('start-btn');
+            const lockFeelingBtn = document.getElementById('lock-feeling-btn');
+            const startOverBtn = document.getElementById('start-over-btn');
+            const questionTextEl = document.querySelector('#ai-question-area .question-text');
+            const userOptionsArea = document.getElementById('user-options-area');
+            const typingIndicator = document.getElementById('typing-indicator');
+            const roadmapContent = document.getElementById('roadmap-content');
+            const happinessSlider = document.getElementById('happiness-slider');
+            const progressSteps = document.querySelectorAll('.progress-step');
+            const particleContainer = document.getElementById('particle-container');
+
+            // --- Particle Generation ---
+            const particleCount = 30;
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = `${Math.random() * 100}vw`;
+                particle.style.top = `${Math.random() * 100}vh`;
+                particle.style.width = `${Math.random() * 3 + 1}px`;
+                particle.style.height = particle.style.width;
+                particle.style.animationDelay = `${Math.random() * 25}s`;
+                particle.style.animationDuration = `${15 + Math.random() * 10}s`;
+                particleContainer.appendChild(particle);
+            }
+
+            // --- Mock Data with Icons ---
+            const conversationFlow = [
+                {
+                    question: "Let's start with your favorite subject. What did you enjoy the most?",
+                    options: [ { text: 'Science & Math', icon: '🔬' }, { text: 'Arts & Humanities', icon: '🎨' }, { text: 'Commerce & Business', icon: '📈' } ]
+                },
+                {
+                    question: "When you work on a project, what role do you naturally take on?",
+                    options: [ { text: 'The Planner/Leader', icon: '🧭' }, { text: 'The Creative Thinker', icon: '💡' }, { text: 'The Detailed Analyst', icon: '📊' } ]
+                },
+                {
+                    question: "And what kind of problems excite you more?",
+                    options: [ { text: 'Building efficient systems', icon: '⚙️' }, { text: 'Creating something beautiful', icon: '🖼️' }, { text: 'Solving complex puzzles', icon: '🧩' } ]
+                }
+            ];
+            let currentStep = 0;
+
+            // --- Animation Effect Function ---
+            function setup3DTilt() {
+                const tiltElements = document.querySelectorAll('.option-card, .glass-button');
+                tiltElements.forEach(el => {
+                    el.addEventListener('mousemove', (e) => {
+                        const rect = el.getBoundingClientRect();
+                        const x = e.clientX - rect.left;
+                        const y = e.clientY - rect.top;
+                        const centerX = rect.width / 2;
+                        const centerY = rect.height / 2;
+                        const rotateX = ((y - centerY) / centerY) * -8;
+                        const rotateY = ((x - centerX) / centerX) * 8;
+                        
+                        el.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                        el.style.setProperty('--x', `${x}px`);
+                        el.style.setProperty('--y', `${y}px`);
+                    });
+                    el.addEventListener('mouseleave', () => {
+                        el.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
+                    });
+                });
+            }
+
+            // --- Core Functions ---
+            function playSound() { clickSound.currentTime = 0; clickSound.play().catch(e => console.log("Sound play failed")); }
+
+            function showScreen(screenId) {
+                allScreens.forEach(screen => screen.classList.remove('active'));
+                document.getElementById(screenId)?.classList.add('active');
+            }
+
+            function updateProgressBar(step) {
+                progressSteps.forEach((el, index) => {
+                    el.classList.toggle('active', index <= step);
+                });
+            }
+
+            function typeWriter(text, element, onComplete) {
+                let i = 0;
+                element.innerHTML = '';
+                const speed = 40;
+                function type() {
+                    if (i < text.length) {
+                        element.innerHTML += text.charAt(i);
+                        i++;
+                        setTimeout(type, speed);
+                    } else if (onComplete) {
+                        onComplete();
+                    }
+                }
+                type();
+            }
+
+            function loadQuestion(step) {
+                updateProgressBar(step);
+                const currentData = conversationFlow[step];
+                userOptionsArea.innerHTML = '';
+                typingIndicator.style.display = 'none';
+
+                typeWriter(currentData.question, questionTextEl, () => {
+                    currentData.options.forEach((option, index) => {
+                        const button = document.createElement('button');
+                        button.className = 'option-card';
+                        button.innerHTML = `<span class="icon">${option.icon}</span><span class="text">${option.text}</span>`;
+                        button.style.animation = `fadeInUp 0.5s ease forwards ${index * 0.1}s`;
+                        button.addEventListener('click', handleOptionClick);
+                        userOptionsArea.appendChild(button);
+                    });
+                    setup3DTilt(); // CRITICAL FIX
+                    userOptionsArea.style.display = 'grid';
+                });
+            }
+
+            function handleOptionClick() {
+                playSound();
+                userOptionsArea.style.display = 'none';
+                typingIndicator.style.display = 'flex';
+                setTimeout(() => {
+                    currentStep++;
+                    if (currentStep < conversationFlow.length) {
+                        loadQuestion(currentStep);
+                    } else {
+                        showScreen('happiness-screen');
+                    }
+                }, 1800);
+            }
+
+            function generateRoadmap(isAlternative) {
+                roadmapContent.innerHTML = isAlternative ? `
+                    <div class="roadmap-card"><div class="icon">🔬</div><div class="roadmap-card-content"><h3>Recommended Stream: Data Science</h3><p>A blend of creativity and analytics.</p></div></div>
+                    <div class="roadmap-card"><div class="icon">📚</div><div class="roadmap-card-content"><h3>Next 2 Years (School)</h3><p>Focus on Python, Statistics & participate in hackathons.</p></div></div>
+                    <div class="roadmap-card"><div class="icon">🎓</div><div class="roadmap-card-content"><h3>Path to College</h3><p>Look for courses in Analytics, AI, and Computer Science.</p></div></div>
+                ` : `
+                    <div class="roadmap-card"><div class="icon">⚙️</div><div class="roadmap-card-content"><h3>Recommended Stream: Engineering</h3><p>A solid path for problem solvers.</p></div></div>
+                    <div class="roadmap-card"><div class="icon">📚</div><div class="roadmap-card-content"><h3>Next 2 Years (School)</h3><p>Strengthen Physics & Math concepts, try building projects.</p></div></div>
+                    <div class="roadmap-card"><div class="icon">🎓</div><div class="roadmap-card-content"><h3>Path to College</h3><p>Aim for top engineering entrance exams like JEE.</p></div></div>
+                `;
+            }
+
+            // --- Event Listeners ---
+            [startBtn, lockFeelingBtn, startOverBtn].forEach(btn => {
+                btn.addEventListener('click', playSound);
+            });
+
+            startBtn.addEventListener('click', () => {
+                showScreen('conversation-screen');
+                loadQuestion(0);
+            });
+
+            lockFeelingBtn.addEventListener('click', () => {
+                generateRoadmap(happinessSlider.value <= 2);
+                showScreen('roadmap-screen');
+            });
+
+            startOverBtn.addEventListener('click', () => window.location.reload());
+
+            // --- Initial setup ---
+            showScreen('landing-screen');
+        });
+    </script>
 </body>
 </html>
